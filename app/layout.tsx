@@ -7,24 +7,25 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: 'Platven LTD',
-  description: 'Real estate platform',
-  openGraph: {
-    title: 'Platven LTD',
-    description: 'Explore real estate opportunities',
-    images: [
-      {
-        url: '/app/opengraph-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Platven Real Estate',
-      },
-    ],
-    type: 'website',
-    siteName: 'Platven',
-  },
-};
+
+// export const metadata: Metadata = {
+//   title: 'Platven LTD',
+//   description: 'Real estate platform',
+  // openGraph: {
+  //   title: 'Platven LTD',
+  //   description: 'Explore real estate opportunities',
+  // },
+// };
+
+
+// export const metadata: Metadata = {
+//   title: 'Platven LTD',
+//   description: 'Real estate platform',
+//   openGraph: {
+//     title: 'Platven LTD',
+//     description: 'Explore real estate opportunities',
+//   },
+// };
 
 export default async function RootLayout({
   children,

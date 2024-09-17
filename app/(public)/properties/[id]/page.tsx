@@ -82,7 +82,7 @@ const PropertyDetailPage: FC<PropsWithPathParams> = async ({
         </div>
         <ListLayoutWithSideBar
           sideBar={
-            <div className="p-4 shadow shadow-slate-300 dark:shadow-slaate-700 rounded-md space-y-4 hidden lg:block">
+            <div className="p-4 shadow shadow-slate-300 dark:shadow-slate-700 rounded-md space-y-4 hidden lg:block">
               <h1 className="font-bold text-xl">Request Property</h1>
               <PropertyRequestForm
                 property={property as any}
