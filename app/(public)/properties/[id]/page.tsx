@@ -5,6 +5,7 @@ import ListLayoutWithSideBar from "@/components/layout/ListLayoutWithSideBar";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/config/site";
 import { getSessionUser } from "@/lib/auth-utils";
 import { formartCurrency } from "@/lib/utils";
 import prisma from "@/prisma/client";
@@ -15,11 +16,45 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FC } from "react";
-import Head from 'next/head';
 
 const ShareProperty = dynamic(() => import('@/components/ShareProperty'), {
   ssr: false,
 });
+
+
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const property = await prisma.property.findUnique({
+    where: { id: params.id, listed: true, isActive: true, payment: { complete: true } },
+    include: { type: true },
+  });
+
+  if (!property) return { title: "Property Not Found" };
+
+  const ogImageUrl = `${siteConfig.url}/${property.images[0]}`;
+
+  return {
+    title: property.title,
+    description: `Check out this ${property.type.title} in ${property.county}, ${property.subCounty}. Price: ${formartCurrency(Number(property.price))}`,
+    openGraph: {
+      title: property.title,
+      description: `Check out this ${property.type.title} in ${property.county}, ${property.subCounty}. Price: ${formartCurrency(Number(property.price))}`,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: property.title,
+        },
+      ],
+    },
+    twitter: {
+      title: property.title,
+      description: `Check out this ${property.type.title} in ${property.county}, ${property.subCounty}. Price: ${formartCurrency(Number(property.price))}`,
+      images: [ogImageUrl],
+    },
+  };
+}
+
 
 const PropertyDetailPage: FC<PropsWithPathParams> = async ({
   params: { id },
@@ -28,30 +63,19 @@ const PropertyDetailPage: FC<PropsWithPathParams> = async ({
     where: { id, listed: true, isActive: true, payment: { complete: true } },
     include: { type: true },
   });
+
   if (!property) return notFound();
+
   const relatedProperties = await prisma.property.findMany({
     include: { type: true },
     take: 8,
     orderBy: { updatedAt: "desc" },
   });
-  const user = await getSessionUser();
 
-  const propertyUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/properties/${property.id}`;
-  const imageUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/${property.images[0]}`;
+  const user = await getSessionUser();
 
   return (
     <>
-      <Head>
-        <title>{property.title}</title>
-        <meta property="og:title" content={property.title} />
-        <meta property="og:description" content="Check out this amazing property!" />
-        <meta property="og:image" content={imageUrl} />
-        <meta property="og:url" content={propertyUrl} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:type" content="website" />
-      </Head>
-
       <div className="flex flex-col space-y-2">
         <div className="flex flex-col md:flex-row gap-5 m-4">
           <div className="w-full lg:w-3/4">
@@ -61,10 +85,9 @@ const PropertyDetailPage: FC<PropsWithPathParams> = async ({
             <CustomProperyRequestForm />
           </div>
         </div>
-
         <ListLayoutWithSideBar
           sideBar={
-            <div className="p-4 shadow shadow-slate-300 dark:shadow-slate-700 rounded-md space-y-4 hidden lg:block">
+            <div className="p-4 shadow shadow-slate-300 dark:shadow-slaate-700 rounded-md space-y-4 hidden lg:block">
               <h1 className="font-bold text-xl">Request Property</h1>
               <PropertyRequestForm
                 property={property as any}
@@ -86,7 +109,7 @@ const PropertyDetailPage: FC<PropsWithPathParams> = async ({
                     <Heart />
                   </Button>
                   <Button>
-                    <ShareProperty propertyUrl={propertyUrl} title="View this property on platven.ke" imageUrl={imageUrl} />
+                    <ShareProperty propertyUrl={`${siteConfig.url}/properties/${property.id}`} title={`View this property on ${siteConfig.url}`}/>
                   </Button>
                 </div>
               </div>
