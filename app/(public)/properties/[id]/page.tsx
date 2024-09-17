@@ -46,12 +46,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
           alt: property.title,
         },
       ],
-    },
-    twitter: {
-      title: property.title,
-      description: `Check out this ${property.type.title} in ${property.county}, ${property.subCounty}. Price: ${formartCurrency(Number(property.price))}`,
-      images: [ogImageUrl],
-    },
+    }
   };
 }
 
@@ -109,7 +104,7 @@ const PropertyDetailPage: FC<PropsWithPathParams> = async ({
                     <Heart />
                   </Button>
                   <Button>
-                    <ShareProperty propertyUrl={`${siteConfig.url}/properties/${property.id}`} title={`View this property on ${siteConfig.url}`}/>
+                    <ShareProperty propertyUrl={`${siteConfig.url}/properties/${property.id}`} title={`View this property on ${siteConfig.name}`}/>
                   </Button>
                 </div>
               </div>
