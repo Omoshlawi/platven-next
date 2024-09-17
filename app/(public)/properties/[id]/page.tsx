@@ -109,7 +109,7 @@ const PropertyDetailPage: FC<PropsWithPathParams> = async ({
                     <Heart />
                   </Button>
                   <Button>
-                    <ShareProperty propertyUrl={`${siteConfig.url}/properties/${property.id}`} title="View this property on Platven"/>
+                    <ShareProperty propertyUrl={`${siteConfig.url}/properties/${property.id}`} title={`View this property on ${siteConfig.url}`}/>
                   </Button>
                 </div>
               </div>
