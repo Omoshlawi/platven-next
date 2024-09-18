@@ -11,42 +11,54 @@ import prisma from "@/prisma/client";
 import { PropsWithPathParams } from "@/types";
 import { Bookmark, Calendar, Heart } from "lucide-react";
 import moment from "moment/moment";
+import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { env } from "process";
 import { FC } from "react";
 
 const ShareProperty = dynamic(() => import('@/components/ShareProperty'), {
   ssr: false,
 });
 
-
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const property = await prisma.property.findUnique({
     where: { id: params.id, listed: true, isActive: true, payment: { complete: true } },
     include: { type: true },
   });
 
-  if (!property) return { title: "Property Not Found" };
+  if (!property) {
+    return { title: "Property Not Found" };
+  }
 
-  const ogImageUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/${property.images[0]}`;
+  const title = `${property.title} - ${property.type.title} in ${property.county}, ${property.subCounty}`;
+  const description = `Check out this ${property.type.title} in ${property.county}, ${property.subCounty}. Price: ${formartCurrency(Number(property.price))}`;
+
+  const ogImageUrl = new URL(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/og`);
+  ogImageUrl.searchParams.append('title', title);
+  ogImageUrl.searchParams.append('image', `${process.env.NEXT_PUBLIC_FRONTEND_URL}/${property.images[0]}`);
 
   return {
-    title: property.title,
-    description: `Check out this ${property.type.title} in ${property.county}, ${property.subCounty}. Price: ${formartCurrency(Number(property.price))}`,
+    title: title,
+    description: description,
     openGraph: {
-      title: property.title,
-      description: `Check out this ${property.type.title} in ${property.county}, ${property.subCounty}. Price: ${formartCurrency(Number(property.price))}`,
+      title: title,
+      description: description,
       images: [
         {
-          url: ogImageUrl,
+          url: ogImageUrl.toString(),
           width: 1200,
           height: 630,
           alt: property.title,
         },
       ],
-    }
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: title,
+      description: description,
+      images: [ogImageUrl.toString()],
+    },
   };
 }
 
@@ -104,7 +116,7 @@ const PropertyDetailPage: FC<PropsWithPathParams> = async ({
                     <Heart />
                   </Button>
                   <Button>
-                    <ShareProperty propertyUrl={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/properties/${property.id}`} title={`View this property on Platven`}/>
+                    <ShareProperty propertyUrl={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/properties/${property.id}`} title={`View this property on Platven`} />
                   </Button>
                 </div>
               </div>

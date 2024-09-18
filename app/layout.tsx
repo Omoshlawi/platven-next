@@ -9,10 +9,28 @@ const inter = Inter({ subsets: ["latin"] });
 
 
 export const metadata: Metadata = {
-  title: 'Platven LTD',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://platven.ke'),
+  title: {
+    default: 'Platven LTD',
+    template: '%s | Platven LTD',
+  },
   description: 'Real estate platform',
   openGraph: {
-    title: 'Platven LTD',
+    title: {
+      default: 'Platven LTD',
+      template: '%s | Platven LTD',
+    },
+    description: 'Explore real estate opportunities',
+    siteName: 'Platven LTD',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: {
+      default: 'Platven LTD',
+      template: '%s | Platven LTD',
+    },
     description: 'Explore real estate opportunities',
   },
 };
