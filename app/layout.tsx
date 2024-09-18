@@ -8,24 +8,14 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 
-// export const metadata: Metadata = {
-//   title: 'Platven LTD',
-//   description: 'Real estate platform',
-  // openGraph: {
-  //   title: 'Platven LTD',
-  //   description: 'Explore real estate opportunities',
-  // },
-// };
-
-
-// export const metadata: Metadata = {
-//   title: 'Platven LTD',
-//   description: 'Real estate platform',
-//   openGraph: {
-//     title: 'Platven LTD',
-//     description: 'Explore real estate opportunities',
-//   },
-// };
+export const metadata: Metadata = {
+  title: 'Platven LTD',
+  description: 'Real estate platform',
+  openGraph: {
+    title: 'Platven LTD',
+    description: 'Explore real estate opportunities',
+  },
+};
 
 export default async function RootLayout({
   children,
