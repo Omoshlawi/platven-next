@@ -5,7 +5,6 @@ import ListLayoutWithSideBar from "@/components/layout/ListLayoutWithSideBar";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/config/site";
 import { getSessionUser } from "@/lib/auth-utils";
 import { formartCurrency } from "@/lib/utils";
 import prisma from "@/prisma/client";
@@ -15,6 +14,7 @@ import moment from "moment/moment";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { env } from "process";
 import { FC } from "react";
 
 const ShareProperty = dynamic(() => import('@/components/ShareProperty'), {
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 
   if (!property) return { title: "Property Not Found" };
 
-  const ogImageUrl = `${siteConfig.url}/${property.images[0]}`;
+  const ogImageUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/${property.images[0]}`;
 
   return {
     title: property.title,
@@ -104,7 +104,7 @@ const PropertyDetailPage: FC<PropsWithPathParams> = async ({
                     <Heart />
                   </Button>
                   <Button>
-                    <ShareProperty propertyUrl={`${siteConfig.url}/properties/${property.id}`} title={`View this property on ${siteConfig.name}`}/>
+                    <ShareProperty propertyUrl={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/properties/${property.id}`} title={`View this property on Platven`}/>
                   </Button>
                 </div>
               </div>

@@ -1,6 +1,5 @@
 import { NextRequest } from 'next/server';
 import { ImageResponse } from '@vercel/og';
-import { siteConfig } from '@/config/site';
 
 export const runtime = 'edge';
 
@@ -47,7 +46,7 @@ export async function GET(req: NextRequest) {
                     <div style={{ fontSize: '50px', fontWeight: 'bold' }}>{title}</div>
                 </div>
                 <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ fontSize: '1.25rem' }}>{siteConfig.url}</div>
+                    <div style={{ fontSize: '1.25rem' }}>{process.env.NEXT_PUBLIC_FRONTEND_URL}</div>
                 </div>
 
                 {imageUrl && (
