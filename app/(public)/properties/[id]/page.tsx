@@ -72,7 +72,7 @@ const PropertyDetailPage: FC<PropsWithPathParams> = async ({
   return (
     <>
       <div className="flex flex-col space-y-2">
-        <div className="flex flex-col gap-5 m-4">
+        <div className="flex flex-col md:flex-row gap-5 m-4">
           <div className="w-full lg:w-3/4">
             <ImageDisplay images={property.images} />
           </div>
