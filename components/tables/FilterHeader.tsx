@@ -23,7 +23,7 @@ const FilterHeader: React.FC<Props> = ({}) => {
   const searchParams = useSearchParams();
 
   const handleSearch = useDebouncedCallback((value) => {
-    const queryParams = new URLSearchParams(searchParams);
+    const queryParams = new URLSearchParams(searchParams.toString());
     if (value) {
       queryParams.set("search", value);
     } else {
@@ -49,7 +49,7 @@ const FilterHeader: React.FC<Props> = ({}) => {
       <div className="flex-none md:w-52 ">
         <Select
           onValueChange={(value) => {
-            const queryParams = new URLSearchParams(searchParams);
+            const queryParams = new URLSearchParams(searchParams.toString());
             if (value) {
               queryParams.set("page_size", value);
             } else {
