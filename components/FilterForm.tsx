@@ -42,7 +42,7 @@ const FilterForm = () => {
   }, []);
 
   const handleSearch = useDebouncedCallback((key, value) => {
-    const queryParams = new URLSearchParams(searchParams);
+    const queryParams = new URLSearchParams(searchParams.toString());
     if (value) {
       queryParams.set(key, value);
     } else {
